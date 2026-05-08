@@ -1,0 +1,70 @@
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# DOC-ANNs — Docker Compose
+#
+# Services:
+#   notebook  →  Jupyter on http://localhost:8888  (default)
+#   cli       →  run any script interactively
+#   test      →  run the self-test suite
+#
+# Usage:
+#   docker compose up notebook          # open Jupyter
+#   docker compose run --rm cli python examples/predict_from_csv.py
+#   docker compose run --rm test
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+
+  # ── Jupyter notebook server ──────────────────────────────────────────────
+  notebook:
+    build: .
+    image: doc-anns:latest
+    container_name: doc-anns-notebook
+    ports:
+      - "8888:8888"
+    volumes:
+      # Mount local folders so edits persist outside the container
+      - ./notebooks:/app/notebooks
+      - ./figures:/app/figures
+      - ./models:/app/models
+      - ./data:/app/data
+      # Mount a local 'satellite_data' folder (create it yourself with your NetCDFs)
+      - ./satellite_data:/app/satellite_data
+    environment:
+      - PYTHONPATH=/app
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ── CLI service: run scripts one-off ────────────────────────────────────
+  cli:
+    build: .
+    image: doc-anns:latest
+    container_name: doc-anns-cli
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./figures:/app/figures
+      - ./satellite_data:/app/satellite_data
+    environment:
+      - PYTHONPATH=/app
+    working_dir: /app
+    # No default command — pass it via `docker compose run cli <cmd>`
+    entrypoint: ["python"]
+
+  # ── Test runner ──────────────────────────────────────────────────────────
+  test:
+    build: .
+    image: doc-anns:latest
+    container_name: doc-anns-test
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+    environment:
+      - PYTHONPATH=/app
+    working_dir: /app
+    command: ["python", "-m", "pytest", "tests/", "-v", "--tb=short"]
