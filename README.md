@@ -144,7 +144,7 @@ DIR_SST  = "/path/to/your/SST"
 DIR_CDOM = "/path/to/your/CDOM443BL1"
 DIR_MLD  = "/path/to/your/MLD"
 DIR_CHL  = "/path/to/your/CHL1"
-DIR_RRS  = "/path/to/your/RrsComplete/USED-RRS_GC"
+DIR_RRS  = "/path/to/your/RRS"
 
 OUTPUT_DIR = "/path/to/your/DOC_output"
 ```
