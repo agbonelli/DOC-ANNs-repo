@@ -203,7 +203,7 @@ jupyter notebook notebooks/
 |----------|---------|--------|
 | Chl-a (OC4) | GlobColour L3m 8-day 25 km | https://hermes.acri.fr |
 | SST | GlobColour / OSTIA | https://hermes.acri.fr |
-| aCDOM(443) | GlobColour L3m — Bélanger algorithm | https://hermes.acri.fr |
+| aCDOM(443) | GlobColour L3m — Bonelli et al. (2021) algorithm | [https://hermes.acri.fr](https://doi.org/10.1016/j.rse.2021.112637) |
 | MLD | CMEMS global ocean physics | https://marine.copernicus.eu |
 | Rrs(412–670) | GlobColour L3m | https://hermes.acri.fr |
 
